@@ -28,7 +28,7 @@ pipeline {
         
         stage('Verify Deployment') {
             steps {
-                sh 'curl http://localhost:5500 || echo "Application not responding"'
+                sh 'curl http://localhost:8080 || echo "Application not responding"'
             }
         }
     }
