@@ -10,11 +10,13 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh 'pwd'  // Print current directory
-                    sh 'ls -la'  // List files in current directory
-                    sh 'docker build -t task1-app .'
-                }
+                sh 'docker build -t task1-app .'
+            }
+        }
+        
+        stage('Check Port 80') {
+            steps {
+                sh 'sudo lsof -i :80 || true'
             }
         }
         
@@ -22,7 +24,26 @@ pipeline {
             steps {
                 sh 'docker stop task1-container || true'
                 sh 'docker rm task1-container || true'
-                sh 'docker run -d -p 80:80 --name task1-container task1-app'
+                sh 'docker run -d -p 80:5000 --name task1-container task1-app'
+            }
+        }
+        
+        stage('Check Container Status') {
+            steps {
+                sh 'docker ps -a'
+                sh 'docker logs task1-container'
+            }
+        }
+        
+        stage('Check Application Port') {
+            steps {
+                sh 'docker exec task1-container netstat -tlnp || true'
+            }
+        }
+        
+        stage('Check Firewall') {
+            steps {
+                sh 'sudo iptables -L || true'
             }
         }
         
