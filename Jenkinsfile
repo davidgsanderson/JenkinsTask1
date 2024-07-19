@@ -22,7 +22,7 @@ pipeline {
             steps {
                 sh 'docker stop task1-container || true'
                 sh 'docker rm task1-container || true'
-                sh 'docker run -d -p 5500:5500 --name task1-container task1-app'
+                sh 'docker run -d -p 80:80 --name task1-container task1-app'
             }
         }
         
