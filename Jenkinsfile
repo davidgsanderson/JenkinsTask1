@@ -10,7 +10,9 @@ pipeline {
         
         stage('Build Docker Image') {
             steps {
-                dir('Task1') {
+                script {
+                    sh 'pwd'  // Print current directory
+                    sh 'ls -la'  // List files in current directory
                     sh 'docker build -t task1-app .'
                 }
             }
@@ -32,8 +34,8 @@ pipeline {
     }
     
     post {
-        failure {
-            sh 'docker logs task1-container'
+        always {
+            sh 'docker logs task1-container || true'
         }
     }
 }
